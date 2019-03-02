@@ -1,10 +1,5 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
+const path = require(`path`);
 
-// You can delete this file if you're not using it
 const languages = {
   ru: {
     path: 'ru',
@@ -17,27 +12,65 @@ const languages = {
   }
 }
 
+function getPath(slug, lang, prefix = '') {
+  return languages[lang].default
+    ? prefix + slug
+    : languages[lang].path + prefix + slug;
+}
+
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions
 
   return new Promise(resolve => {
     deletePage(page)
 
-    Object.keys(languages).map(lang => {
-      const localizedPath = languages[lang].default
-        ? page.path
-        : languages[lang].path + page.path
-
-      return createPage({
+    Object.keys(languages).map(lang => createPage({
         ...page,
-        path: localizedPath,
+        path: getPath(page.path, lang),
         context: {
           locale: lang,
           pathname: page.path,
         }
-      })
-    })
+      }));
 
     resolve()
+  })
+}
+
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage } = actions;
+
+  return graphql(`
+    {
+      allContentfulPosts {
+        edges {
+          node {
+            id
+            title
+            slug
+            textmd {
+              childMarkdownRemark {
+                html
+              }
+            }
+            node_locale
+          }
+        }
+      }
+    }
+  `
+  ).then(result => {
+    result.data.allContentfulPosts.edges.forEach(({ node }) => {
+      createPage({
+        path: getPath(node.slug, node.node_locale, '/posts/'),
+        component: path.resolve('./src/templates/posts.jsx'),
+        context: {
+          pathname: `/posts/${node.slug}`,
+          title: node.title,
+          text: node.textmd.childMarkdownRemark.html,
+          locale: node.node_locale,
+        },
+      })
+    })
   })
 }

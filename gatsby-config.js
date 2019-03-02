@@ -1,3 +1,5 @@
+const CONTENTFUL_ACCESS_TOKEN = 'bc6c1c3737de2bac5064b8dd7d1d6d2721bbff16981e884edf180229c4df2f43';
+
 module.exports = {
   siteMetadata: {
 
@@ -25,6 +27,14 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: `gatsby-source-contentful`,
+      options: {
+        spaceId: 'we6ps8rz1hty',
+        accessToken: CONTENTFUL_ACCESS_TOKEN,
+      },
+    },
+    'gatsby-transformer-remark',
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // 'gatsby-plugin-offline',
