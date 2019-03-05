@@ -1,6 +1,6 @@
 import React from "react";
 import { withTranslation } from 'react-i18next';
-import DOMPurify from 'dompurify';
+// import DOMPurify from 'dompurify';
 
 import Layout from "../components/layout";
 
@@ -9,7 +9,7 @@ const Post = ({ pathContext, i18n }) => {
   return (
     <Layout path={pathContext.pathname}>
       <h1>{pathContext.title}</h1>
-      <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(pathContext.text)}}></div>
+      <div dangerouslySetInnerHTML={{__html: pathContext.text}}></div>
     </Layout>
   )
 }
