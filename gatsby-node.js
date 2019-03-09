@@ -48,6 +48,8 @@ exports.createPages = ({ graphql, actions }) => {
             id
             title
             slug
+            youtube
+            vimeo
             textmd {
               childMarkdownRemark {
                 html
@@ -69,6 +71,8 @@ exports.createPages = ({ graphql, actions }) => {
           title: node.title,
           text: node.textmd.childMarkdownRemark.html,
           locale: node.node_locale,
+          youtube: node.youtube,
+          vimeo: node.vimeo,
         },
       })
     })
