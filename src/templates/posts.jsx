@@ -18,7 +18,7 @@ const Post = ({ pathContext, i18n }) => {
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
         allowFullScreen
       ></iframe>}
-      {<iframe 
+      {pathContext.vimeo && <iframe 
         title={`${pathContext.title} vimeo video`}
         width="560"
         height="315" 
